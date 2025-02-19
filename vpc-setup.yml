@@ -146,6 +146,7 @@
     - name: Create Route Table
       ec2_vpc_route_table:
         vpc_id: "{{ vpcout.vpc.id }}"
+        region: "{{ region }}"
         state: present
         tags:
           Name: "Vprofile-RouteTable"
