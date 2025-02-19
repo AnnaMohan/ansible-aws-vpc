@@ -133,9 +133,9 @@
           Name: "vprofile-IGW"
       register: igw_out
 
-    # - name: Print Internet Gateway ID
-    #   debug:
-    #     var: igw.gateway_id
+    - name: Print Internet Gateway ID
+      debug:
+        var: igw_out.gateway_id
 
     # - name: Attach Internet Gateway to VPC
     #   ec2_vpc_igw:
@@ -143,20 +143,21 @@
     #     gateway_id: "{{ igw.gateway_id }}"
     #     state: present
 
-    # - name: Create Route Table
-    #   ec2_vpc_route_table:
-    #     vpc_id: "{{ vpc.vpc.id }}"
-    #     state: present
-    #     tags:
-    #       Name: "{{ route_table_name }}"
-    #   register: route_table
+    - name: Create Route Table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpcout.vpc.id }}"
+        state: present
+        tags:
+          Name: "Vprofile-RouteTable"
+        subnets:
+          - "{{ pubsub1_out.subnet.id }}"
+          - "{{ pubsub2_out.subnet.id }}"
+          - "{{ pubsub3_out.subnet.id }}"
+        routes: 
+          - dest: 0.0.0.0/0 
+            gateway_id: "{{ igw_out.gateway_id }}"
+      register: pubRT_out
 
-    # - name: Print Route Table ID
-    #   debug:
-    #     var: route_table.route_table.id
-
-    # - name: Create Route
-    #   ec2_vpc_route_table:
-    #     vpc_id: "{{ vpc.vpc.id }}"
-    #     route_table_id: "{{ route_table.route_table.id }}"
-    #     dest:
+    - name: Print Route Table ID
+      debug:
+        var: pubRT_out.route_table.id
