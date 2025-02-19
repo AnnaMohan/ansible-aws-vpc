@@ -124,13 +124,14 @@
           var: privsub3_out.subnet.id
 
 
-    # - name: Create Internet Gateway
-    #   ec2_vpc_igw:
-    #     vpc_id: "{{ vpc.vpc.id }}"
-    #     state: present
-    #     tags:
-    #       Name: "{{ igw_name }}"
-    #   register: igw
+    - name: Create Internet Gateway
+      ec2_vpc_igw:
+        vpc_id: "{{ vpcout.vpc.id }}"
+        region: "{{ region }}"
+        state:  "{{ state }}"
+        resource_tags:
+          Name: "vprofile-IGW"
+      register: igw_out
 
     # - name: Print Internet Gateway ID
     #   debug:
