@@ -37,6 +37,10 @@
           Name: "vprofile-pubsub1"
       register: pubsub1_out
 
+      - name: Print VPC ID
+      debug:
+        var: pubsub1_out.subnet.id
+
     - name: Create Subnet
       ec2_vpc_subnet:
         vpc_id: "{{ vpcout.vpc.id }}"
