@@ -37,9 +37,9 @@
           Name: "vprofile-pubsub1"
       register: pubsub1_out
 
-      - name: Print VPC ID
+    - name: Print pubSub1 ID
       debug:
-        var: pubsub1_out.subnet.id
+          var: pubsub1_out.subnet.id
 
     - name: Create Subnet
       ec2_vpc_subnet:
