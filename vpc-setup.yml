@@ -153,7 +153,7 @@
             gateway_id: "{{ igw_out.gateway_id }}"
       register: pubRT_out
 
-    - name: Print Route Table ID
+    - name: Print Public Route Table ID
       debug:
         var: pubRT_out.route_table.id
 
@@ -184,3 +184,25 @@
         routes: 
           - dest: 0.0.0.0/0 
             gateway_id: "{{ natgw_out.nat_gateway_id }}"
+      register: privRT_out
+
+    - name: Print Private Route Table ID
+      debug:
+        var: privRT_out.route_table.id
+
+    - debug:
+        var: {{item}}
+      loop:
+        - vpcout
+        - pubsub1_out
+        - pubsub2_out
+        - pubsub3_out
+        - privsub1_out
+        - privsub2_out
+        - privsub3_out
+        - igw_out
+        - pubRT_out
+        - natgw_out
+        - privRT_out
+        
+    
