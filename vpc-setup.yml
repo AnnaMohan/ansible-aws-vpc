@@ -162,7 +162,6 @@
         state: "{{ state }}"
         region: "{{ region }}"
         subnet_id: "{{ pubsub1_out.subnet.id }}"
-        allocation_id: "{{ eip1 }}"
         wait: yes
         if_exist_do_not_create: yes
         tags:
