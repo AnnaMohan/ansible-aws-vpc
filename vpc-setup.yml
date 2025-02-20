@@ -164,9 +164,7 @@
         subnet_id: "{{ pubsub1_out.subnet.id }}"
         wait: yes
         if_exist_do_not_create: 
-        tags:
-          Name: "vprofile-NATGW"
-      register: natgw_out
+        vpc_id: "{{ vpcout.vpc.id }}"
 
 
       #   tags:
