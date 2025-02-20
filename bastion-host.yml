@@ -7,11 +7,11 @@
     tasks:
       - name: import vpc setup variables
         include_vars:
-          file: vpc_setup.txt
+          file: vars/vpc_setup.txt
       
       - name: import vpc output variables
         include_vars:
-          file: vpc_setup.txt
+          file: vars/output_vars.txt
 
       - name: keypair for bastion hosts
         ec2_key:
