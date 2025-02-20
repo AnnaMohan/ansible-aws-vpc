@@ -32,7 +32,7 @@
 
       - name: Create Security Group
         ec2_group:
-          name: "{{ bastion_sg }}"
+          name: "bastion_sg"
           description: "Security"
           region: "{{ region }}"
           vpc_id: "{{ vpcout.vpc.id }}"
