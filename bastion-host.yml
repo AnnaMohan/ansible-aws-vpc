@@ -45,7 +45,7 @@
       var: bastion_sg.group_id
   
   - name: Create Bastion Host instance
-    ec2:
+    ec2_group:
       key_name: "{{ bastion_key }}"
       instance_type: "t2.micro"
       image: "{{ bastion_ami }}"
