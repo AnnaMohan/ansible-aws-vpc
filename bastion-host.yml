@@ -24,11 +24,11 @@
         debug:
           var:  keypair_out
 
-      # - name: save private key file
-      #   copy:
-      #     content: "{{ keypair_out.key.private_key }}"
-      #     dest: "{{ keypair_out.key.name }}.pem"
-      #     mode: 0400
+      - name: save private key file
+        copy:
+          content: "{{ keypair_out.key.name }}.pem"
+          dest: "./bastion-key"
+          mode: 0400
 
       # - name: Create Security Group
       #   ec2_group:
