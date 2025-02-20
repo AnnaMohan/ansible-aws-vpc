@@ -165,8 +165,10 @@
         wait: yes
         if_exist_do_not_create: 
         tags:
+          Name: "vprofile-NATGW"
+      register: natgw_out
 
-        
+
       #   tags:
       #     Name: "vprofile-NATGW"
       # register: natgw_out
