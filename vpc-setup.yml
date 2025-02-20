@@ -191,7 +191,7 @@
         var: privRT_out.route_table.id
 
     - debug:
-        var: {{item}}
+        var: "{{item}}"
       loop:
         - vpcout
         - pubsub1_out
@@ -204,5 +204,5 @@
         - pubRT_out
         - natgw_out
         - privRT_out
-        
+
     
