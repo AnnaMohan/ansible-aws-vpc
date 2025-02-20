@@ -17,7 +17,7 @@
     ec2_key:
       name: " bastion_key "
       region: "{{ region }}"
-      state: present
+      # state: present
     register: keypair_out
   
   # - name: store keypair
