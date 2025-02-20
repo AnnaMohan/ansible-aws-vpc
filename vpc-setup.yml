@@ -205,4 +205,34 @@
         - natgw_out.nat_gateway_id
         - privRT_out.route_table.id
 
+    - set_fact:
+        vpc_id: "{{ vpcout.vpc.id }}"
+        pubsub1_id: "{{ pubsub1_out.subnet.id }}"
+        pubsub2_id: "{{ pubsub2_out.subnet.id }}"
+        pubsub3_id: "{{ pubsub3_out.subnet.id }}"
+        privsub1_id: "{{ privsub1_out.subnet.id }}"
+        privsub2_id: "{{ privsub2_out.subnet.id }}"
+        privsub3_id: "{{ privsub3_out.subnet.id }}"
+        igw_id: "{{ igw_out.gateway_id }}"
+        pubRT_id: "{{ pubRT_out.route_table.id }}"
+        natgw_id: "{{ natgw_out.nat_gateway_id }}"
+        privRT_id: "{{ privRT_out.route_table.id }}"
+        cacheable: yes
+    
+    - name: Save the id's to a file
+      copy:
+        content: |
+          vpc_id: "{{ vpcout.vpc.id }}"
+          pubsub1_id: "{{ pubsub1_out.subnet.id }}"
+          pubsub2_id: "{{ pubsub2_out.subnet.id }}"
+          pubsub3_id: "{{ pubsub3_out.subnet.id }}"
+          privsub1_id: "{{ privsub1_out.subnet.id }}"
+          privsub2_id: "{{ privsub2_out.subnet.id }}"
+          privsub3_id: "{{ privsub3_out.subnet.id }}"
+          igw_id: "{{ igw_out.gateway_id }}"
+          pubRT_id: "{{ pubRT_out.route_table.id }}"
+          natgw_id: "{{ natgw_out.nat_gateway_id }}"
+          privRT_id: "{{ privRT_out.route_table.id }}"
+        dest: vars/output_vars.txt
+
     
