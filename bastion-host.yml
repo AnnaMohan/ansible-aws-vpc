@@ -30,19 +30,19 @@
           dest: "./bastion-key"
           mode: 0400
 
-      # - name: Create Security Group
-      #   ec2_group:
-      #     name: "{{ bastion_sg }}"
-      #     description: "Security"
-      #     region: "{{ region }}"
-      #     vpc_id: "{{ vpcout.vpc.id }}"
-      #     rules:
-      #       - proto: tcp
-      #         from_port: 22
-      #         to_port: 22
-      #         cidr_ip: "{{MYIP}}"
-      # - debug:
-      #     var: bastion_sg.group_id
+      - name: Create Security Group
+        ec2_group:
+          name: "{{ bastion_sg }}"
+          description: "Security"
+          region: "{{ region }}"
+          vpc_id: "{{ vpcout.vpc.id }}"
+          rules:
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: "{{MYIP}}"
+      - debug:
+          var: bastion_sg.group_id
 
       # - name: Create Bastion Host instance
       #   ec2_group:
