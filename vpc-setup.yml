@@ -137,17 +137,11 @@
       debug:
         var: igw_out.gateway_id
 
-    # - name: Attach Internet Gateway to VPC
-    #   ec2_vpc_igw:
-    #     vpc_id: "{{ vpc.vpc.id }}"
-    #     gateway_id: "{{ igw.gateway_id }}"
-    #     state: present
-
     - name: Create Route Table
       ec2_vpc_route_table:
         vpc_id: "{{ vpcout.vpc.id }}"
         region: "{{ region }}"
-        state: present
+        state: "{{ state }}"
         tags:
           Name: "Vprofile-RouteTable"
         subnets:
@@ -162,3 +156,34 @@
     - name: Print Route Table ID
       debug:
         var: pubRT_out.route_table.id
+
+    - name: Create Nat Gateway
+      ec2_vpc_nat_gateway:
+        state: "{{ state }}"
+        region: "{{ region }}"
+        subnet_id: "{{ pubsub1_out.subnet.id }}"
+        allocation_id: "{{ eip1 }}"
+        wait: yes
+        if_exist_do_not_create: yes
+        tags:
+          Name: "vprofile-NATGW"
+      register: natgw_out
+
+    - name: Print Nat Gateway ID
+      debug:
+        var: natgw_out.nat_gateway_id
+
+    - name: Create Route Table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpcout.vpc.id }}"
+        region: "{{ region }}"
+        state: "{{ state }}"
+        tags:
+          Name: "Vprofile-privRT"
+        subnets:
+          - "{{ privsub1_out.subnet.id }}"
+          - "{{ privsub2_out.subnet.id }}"
+          - "{{ privsub3_out.subnet.id }}"
+        routes: 
+          - dest: 0.0.0.0/0 
+            gateway_id: "{{ natgw_out.nat_gateway_id }}"
