@@ -13,12 +13,12 @@
         include_vars:
           file: vpc_setup.txt
 
-  - name: keypair for bastion hosts
-    ec2_key:
-      name: " bastion_key "
-      region: "{{ region }}"
-      # state: present
-    register: keypair_out
+      - name: keypair for bastion hosts
+        ec2_key:
+          name: " bastion_key "
+          region: "{{ region }}"
+          # state: present
+        register: keypair_out
   
   # - name: store keypair
   #   debug:
