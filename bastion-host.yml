@@ -55,11 +55,11 @@
           region: "{{ region }}"
           filters:
             "tag:Name": "bastion-host"
-            instance-state-name: ["pending", "running", "stopped", "stopping", "initializing"]
+            instance-state-name: ["Pending", "Running", "Stopped", "Stopping"]
         register: bastion_instance_info
 
       - name: Create Bastion Host instance
-        ec2:
+        ec2_instance:
           key_name: bastion_key
           instance_type: t2.micro
           image: "{{ bastion_ami }}"
@@ -83,5 +83,5 @@
       
       - name: Print Bastion Host ID
         debug:
-          var: bastion_istance_out.instances[0].id
+          var: bastion_instance_out.instances[0].id
           
