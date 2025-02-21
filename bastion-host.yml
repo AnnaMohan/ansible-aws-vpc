@@ -46,25 +46,29 @@
       - debug:
           var: bastion_sg_out.group_id
 
-      # - name: Create Bastion Host instance
-      #   ec2_group:
-      #     key_name: "bastion_key"
-      #     instance_type: "t2.micro"
-      #     image: "{{ bastion_ami }}"
-      #     wait: true
-      #     region: "{{ region }}"
-      #     group_id: "{{ bastion_sg }}"
-      #     wait_timeout: 300
-      #     wait: yes
-      #     instance_tags:
-      #       Name: "bastion-host"
-      #       Owner: "vprofile"
-      #     exact_count: 1
-      #     count_tag:
-      #       Name: "bastion-host"
-      #       Project: "vprofile"
-      #       Owner: "vprofile"
-      #       group_id: "{{ bastion_sg }}"
-      #       vpc_subnet_id: "{{ pubsub1_out.subnet.id }}"
-      #   register: bastion_out
+      - name: Create Bastion Host instance
+        ec2_group:
+          key_name: "bastion_key"
+          instance_type: "t2.micro"
+          image: "{{ bastion_ami }}"
+          wait: true
+          region: "{{ region }}"
+          group_id: "{{ bastion_sg_out.group_id }}"
+          wait_timeout: 300
+          wait: yes
+          instance_tags:
+            Name: "bastion-host"
+            Owner: "vprofile"
+          exact_count: 1
+          count_tag:
+            Name: "bastion-host"
+            Project: "vprofile"
+            Owner: "vprofile"
+            group_id: "{{ bastion_sg_out.group_id }}"
+            vpc_subnet_id: "{{ pubsub1_out.subnet.id }}"
+        register: bastion_istance_out
+      
+      - name: Print Bastion Host ID
+        debug:
+          var: bastion_istance_out.instances[0].id
           
