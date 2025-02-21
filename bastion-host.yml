@@ -52,14 +52,14 @@
 
       - name: Create Bastion Host instance
         ec2:
-          key_name: "bastion_key"
-          instance_type: "t2.micro"
+          key_name: bastion_key
+          instance_type: t2.micro
           image: "{{ bastion_ami }}"
           wait: true
           region: "{{ region }}"
           group_id: "{{ bastion_sg_out.group_id }}"
-          wait_timeout: 300
           wait: yes
+          wait_timeout: 300
           instance_tags:
             Name: "bastion-host"
             Owner: "vprofile"
@@ -72,7 +72,7 @@
             vpc_subnet_id: "{{ pubsub1_id }}"
         register: bastion_instance_out
       
-      - name: Print Bastion Host ID
-        debug:
-          var: bastion_istance_out.instances[0].id
+      # - name: Print Bastion Host ID
+      #   debug:
+      #     var: bastion_istance_out.instances[0].id
           
