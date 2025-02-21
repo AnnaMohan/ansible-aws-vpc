@@ -57,7 +57,6 @@
           image: "{{ bastion_ami }}"
           wait: true
           region: "{{ region }}"
-          group_id: "{{ bastion_sg_out.group_id }}"
           wait: yes
           wait_timeout: 300
           instance_tags:
@@ -68,8 +67,8 @@
             Name: "bastion-host"
             Project: "vprofile"
             Owner: "vprofile"
-            group_id: "{{ bastion_sg_out.group_id }}"
-            vpc_subnet_id: "{{ pubsub1_id }}"
+          group_id: "{{ bastion_sg_out.group_id }}"
+          vpc_subnet_id: "{{ pubsub1_id }}"
         register: bastion_instance_out
       
       # - name: Print Bastion Host ID
