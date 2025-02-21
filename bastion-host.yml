@@ -58,27 +58,46 @@
             instance-state-name: ["Pending", "Running", "Stopped", "Stopping"]
         register: bastion_instance_info
 
-      - name: Create Bastion Host instance
-        ec2_instance:
+      # - name: Create Bastion Host instance
+      #   ec2_instance:
+      #     key_name: bastion_key
+      #     instance_type: t2.micro
+      #     image: "{{ bastion_ami }}"
+      #     wait: true
+      #     region: "{{ region }}"
+      #     wait: yes
+      #     wait_timeout: 300
+      #     instance_tags:
+      #       Name: "bastion-host"
+      #       Owner: "vprofile"
+      #     # exact_count: 1
+      #     # count_tag:
+      #     #   Name: "bastion-host"
+      #     #   Project: "vprofile"
+      #     #   Owner: "vprofile"
+      #     group_id: "{{ bastion_sg_out.group_id }}"
+      #     vpc_subnet_id: "{{ pubsub1_id }}"
+      #   register: bastion_instance_out
+      #   when: bastion_instance_info.instances | length == 0
+
+
+      - name: Create Bastion Host instance if not exists
+        amazon.aws.ec2_instance:
+          name: "bastion-host"
           key_name: bastion_key
           instance_type: t2.micro
-          image: "{{ bastion_ami }}"
-          wait: true
+          image_id: "{{ bastion_ami }}"
           region: "{{ region }}"
           wait: yes
-          wait_timeout: 300
-          instance_tags:
+          security_groups: 
+            - "{{ bastion_sg_out.group_id }}"
+          vpc_subnet_id: "{{ pubsub1_id }}"
+          tags:
             Name: "bastion-host"
             Owner: "vprofile"
-          # exact_count: 1
-          # count_tag:
-          #   Name: "bastion-host"
-          #   Project: "vprofile"
-          #   Owner: "vprofile"
-          group_id: "{{ bastion_sg_out.group_id }}"
-          vpc_subnet_id: "{{ pubsub1_id }}"
-        register: bastion_instance_out
+            Project: "vprofile"
         when: bastion_instance_info.instances | length == 0
+
         
       
       - name: Print Bastion Host ID
