@@ -69,7 +69,7 @@
             Project: "vprofile"
             Owner: "vprofile"
             group_id: "{{ bastion_sg_out.group_id }}"
-            vpc_subnet_id: "{{ pubsub1_out.subnet.id }}"
+            vpc_subnet_id: "{{ pubsub1_id }}"
         register: bastion_istance_out
       
       - name: Print Bastion Host ID
