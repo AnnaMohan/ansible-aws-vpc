@@ -82,7 +82,7 @@
 
 
       - name: Create Bastion Host instance if not exists
-        amazon.aws.ec2_instance:
+        ec2_instance:
           name: "bastion-host"
           key_name: bastion_key
           instance_type: t2.micro
