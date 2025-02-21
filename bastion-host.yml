@@ -70,11 +70,11 @@
           instance_tags:
             Name: "bastion-host"
             Owner: "vprofile"
-          exact_count: 1
-          count_tag:
-            Name: "bastion-host"
-            Project: "vprofile"
-            Owner: "vprofile"
+          # exact_count: 1
+          # count_tag:
+          #   Name: "bastion-host"
+          #   Project: "vprofile"
+          #   Owner: "vprofile"
           group_id: "{{ bastion_sg_out.group_id }}"
           vpc_subnet_id: "{{ pubsub1_id }}"
         register: bastion_instance_out
