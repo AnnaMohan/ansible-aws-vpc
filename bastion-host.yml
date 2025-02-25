@@ -49,6 +49,14 @@
 
       - debug:
           var: bastion_sg_out.group_id
+      
+      - name: insert this bastion sg id into output_vars.txt
+        blockinfile:
+          path: vars/output_vars.txt
+          backup: yes
+          block: |
+            bastion_sg_id: "{{ bastion_sg_out.group_id }}"
+          insertafter: EOF
 
       - name: Check if Bastion Host instance already exists
         ec2_instance_info:

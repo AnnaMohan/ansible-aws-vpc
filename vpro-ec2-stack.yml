@@ -40,6 +40,9 @@
             to_port: 80
             cidr_ip: 0.0.0.0/0
       register: vpro_elb_sg_out
+
+    - debug:
+        var: vpro_elb_sg_out.group_id
     
     - name: Create Vprofile ec2 security group
       ec2_group:
@@ -57,8 +60,13 @@
           - proto: tcp
             from_port: 22
             to_port: 22
-            group_ip: "{{}}"
+            group_ip: "{{bastion_sg_id.group_id}}"
+      register: vpro_sg_out
 
+    - debug:
+        var: vpro_sg_out.group_id
+
+    
     
 
     
