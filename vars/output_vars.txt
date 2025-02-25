@@ -1,4 +1,5 @@
 Note: In realtime this information will be very critical dont keep them in public repos in your projects.
+region: "us-east-2"
 vpc_id: "vpc-04ef02ff0c67ff129"
 pubsub1_id: "subnet-0a6c722c447eac52d"
 pubsub2_id: "subnet-0d05e4bf7acb8e45d"

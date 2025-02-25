@@ -1,0 +1,70 @@
+---
+- name: Setup Vprofile Stack
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: import vpc output variables
+      include_vars:
+        file: vars/output_vars.txt
+
+    - name: import vpc output variables
+      include_vars:
+        file: vars/vprostacksetup.txt
+
+    - name: Create Vprofile ec2 keypair
+      ec2_key:
+        name: "vprostack_key"
+        region: "{{ region }}"
+        # state: present
+      register: vprokey_out
+
+    - name: store keypair
+      copy:
+        content: "{{ vprokey_out.key.private_key }}.pem"
+        dest: "./vprostack-key"
+        mode: 0400
+      when: vprokey_out.changed
+
+    - name: Create ELB security group
+      ec2_group:
+        name: "vprostack_elb_sg"
+        description: "Vprofile stack ELB security group"
+        region: "{{ region }}"
+        vpc_id: "{{ vpc_id }}"
+        purge_rules: no
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+      register: vpro_elb_sg_out
+    
+    - name: Create Vprofile ec2 security group
+      ec2_group:
+        name: "vprostack_sg"
+        description: "Vprofile stack security group"
+        region: "{{ region }}"
+        vpc_id: "{{ vpc_id }}"
+        purge_rules: no # to avoid recreating the rules if same are present, to make rules idempotent
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            group_ip: "{{vpro_elb_sg_out.group_id}}"
+
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            group_ip: "{{}}"
+
+    
+
+    
+
+    
+
+
+
+   
