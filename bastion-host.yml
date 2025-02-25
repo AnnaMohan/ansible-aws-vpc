@@ -69,7 +69,7 @@
           wait_timeout: 300
           instance_tags:
             Name: "bastion-host"
-            Owner: "vprofile"
+            Project: "vprofile"
           exact_count: 1
           count_tag:
             Name: "bastion-host"
