@@ -50,57 +50,56 @@
       - debug:
           var: bastion_sg_out.group_id
 
-      - name: Check if Bastion Host instance already exists
-        ec2_instance_info:
-          region: "{{ region }}"
-          filters:
-            "tag:Name": "bastion-host"
-            instance-state-name: ["Pending", "Running", "Stopped", "Stopping"]
-        register: bastion_instance_info
-
-      # - name: Create Bastion Host instance
-      #   ec2: #works with ec2 module but exact_count and count_tag not working
-      #     key_name: bastion_key
-      #     instance_type: t2.micro
-      #     image: "{{ bastion_ami }}"
-      #     wait: true
+      # - name: Check if Bastion Host instance already exists
+      #   ec2_instance_info:
       #     region: "{{ region }}"
-      #     wait: yes
-      #     wait_timeout: 300
-      #     instance_tags:
-      #       Name: "bastion-host"
-      #       Owner: "vprofile"
-      #     # exact_count: 1
-      #     # count_tag:
-      #     #   Name: "bastion-host"
-      #     #   Project: "vprofile"
-      #     #   Owner: "vprofile"
-      #     group_id: "{{ bastion_sg_out.group_id }}"
-      #     vpc_subnet_id: "{{ pubsub1_id }}"
-      #   register: bastion_instance_out
-      #   when: bastion_instance_info.instances | length == 0
+      #     filters:
+      #       "tag:Name": "bastion-host"
+      #       instance-state-name: ["Pending", "Running", "Stopped", "Stopping"]
+      #   register: bastion_instance_info
 
-
-      - name: Create Bastion Host instance if not exists
-        ec2_instance:
-          name: "bastion-host"
+      - name: Create Bastion Host instance
+        ec2: #works with ec2 module but exact_count and count_tag not working
           key_name: bastion_key
           instance_type: t2.micro
-          image_id: "{{ bastion_ami }}"
+          image: "{{ bastion_ami }}"
+          wait: true
           region: "{{ region }}"
           wait: yes
-          security_groups: 
-            - "{{ bastion_sg_out.group_id }}"
-          vpc_subnet_id: "{{ pubsub1_id }}"
-          tags:
+          wait_timeout: 300
+          instance_tags:
             Name: "bastion-host"
             Owner: "vprofile"
+          exact_count: 1
+          count_tag:
+            Name: "bastion-host"
             Project: "vprofile"
-        when: bastion_instance_info.instances | length == 0
+          group_id: "{{ bastion_sg_out.group_id }}"
+          vpc_subnet_id: "{{ pubsub1_id }}"
+        register: bastion_instance_out
+        # when: bastion_instance_info.instances | length == 0
+
+
+      # - name: Create Bastion Host instance if not exists
+      #   ec2_instance:
+      #     name: "bastion-host"
+      #     key_name: bastion_key
+      #     instance_type: t2.micro
+      #     image_id: "{{ bastion_ami }}"
+      #     region: "{{ region }}"
+      #     wait: yes
+      #     security_groups: 
+      #       - "{{ bastion_sg_out.group_id }}"
+      #     vpc_subnet_id: "{{ pubsub1_id }}"
+      #     tags:
+      #       Name: "bastion-host"
+      #       Owner: "vprofile"
+      #       Project: "vprofile"
+      #   when: bastion_instance_info.instances | length == 0
 
         
       
-      - name: Print Bastion Host ID
-        debug:
-          var: bastion_instance_out.instances[0].id
+      # - name: Print Bastion Host ID
+      #   debug:
+      #     var: bastion_instance_out.instances[0].id
           
