@@ -1,0 +1,60 @@
+- name: Setup Mysql with accounts db and remote login
+  hosts: dbsrvgrp
+  gather_facts: not
+  tasks:
+    - name: Installing Mysql Service and dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+        cache_valid_time: 86400
+      loop:
+        - mysql-server
+        - mysql-client
+        - python-mysqldb
+        - pyhton3-mysqldb
+        - libmysqlclient-dev
+      ignore_errors: yes # if we wont use this line this task will fail if any of the package is not found
+      tags: 
+        - package
+
+    - name: Start Mysql Service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+      tags:
+        - service
+    
+    - name: creating mysql user
+      mysql_user:
+        name: "{{dbuser}}"
+        password: "{{dbpass}}"
+        priv: '*.*:ALL' # full privieleage
+        host: "%" # so that we can login from remote host
+        state: present
+
+
+    - name: creating accounts db.yml
+      mysql_db:
+        name: "{{ dbname }}"
+        state: present
+        
+    - name: Enable remote login
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0.'
+        backup: yes
+        notify: 
+          - restart mysql
+        tags:
+          - conf
+  handlers:
+      - name: restart mysql
+        service:
+          name: mysql
+          state: restarted
+          
+
+
