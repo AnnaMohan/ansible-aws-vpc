@@ -1,0 +1,94 @@
+---
+- name: Install & setup Rabbitmq with user
+  hosts: rmsrvgrp
+  gather_facts: no
+  tasks:
+    - name: Install Erlang Repository package
+      apt:
+        deb: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+      tags:
+        - package
+      
+
+    - name: Add an Erlang Solution public key
+      apt_key:
+        url: https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc
+        state: present
+      tags:
+        - package
+
+    - name: Install Erlang
+      apt:
+        name: erlang
+        state: present
+        update_cache: yes
+        cache_valid_time: 86400
+      tags:
+        - package
+
+    - apt_repository:
+      repo: deb https://dl.bintray.com/rabbitmq-erlang/debian bionic main
+      state: present
+      tags:
+        - package
+
+    - name: Install Rabbit MQ
+      apt:
+        name: rabbitmq-server
+        state: present
+        update_cache: yes
+        cache_valid_time: 86400
+      tags:
+        - package
+
+    - name: Start & Enable MQ 
+      apt: 
+        - name: rabbitmq-server
+          state: started
+          update_cache: yes
+      tags: 
+        - package
+
+    - name: Config setup
+      copy:
+        content: | 
+          [
+            {rabbit, [
+              {loopback_users, []}
+            ]}
+          ]
+        dest: /etc/rabbitmq/rabbitmq.config
+      notify:
+        - Restart RMQ 
+      tags:
+        - conf
+
+    - rabbitmq_user:
+        user: test
+        password: test
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+        tags: administrator
+        state: present
+      notify:
+        - Restart RMQ
+      tags:
+        - conf
+
+    - name: Enables the rabbit_management plugin 
+      rabbitmq_plugin:
+        name: rabbitmq_management
+        state: present
+      notify:
+        - Restart RMQ
+      tags:
+        - package
+  
+  handlers:
+    - name: Restart RMQ
+      service:
+        name: rabbitmq-server
+        state: restarted
+      tags:
+        - service
