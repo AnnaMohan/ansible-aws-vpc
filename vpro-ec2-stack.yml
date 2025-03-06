@@ -9,7 +9,7 @@
       include_vars:
         file: vars/output_vars.txt
 
-    - name: import vpc output variables
+    - name: import vpro stack variables
       include_vars:
         file: vars/vprostacksetup.txt
 
